@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [question, setQuestion] = useState("");
   const [isThinking, setIsThinking] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // Keep the newest message in view as the conversation changes.
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isThinking]);
 
   async function sendMessage(event) {
     event.preventDefault();
@@ -53,11 +59,24 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col gap-6 p-6">
-      <header>
-        <h1 className="text-3xl font-bold">AI Study Helper</h1>
-        <p className="mt-2 text-zinc-600">
-          Ask a question and I&apos;ll explain it in simple words.
-        </p>
+      <header className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">AI Study Helper</h1>
+          <p className="mt-2 text-zinc-600">
+            Ask a question and I&apos;ll explain it in simple words.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setMessages([]);
+            setQuestion("");
+          }}
+          disabled={isThinking || messages.length === 0}
+          className="shrink-0 rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Clear Chat
+        </button>
       </header>
 
       <section
@@ -84,6 +103,7 @@ export default function Home() {
         ))}
 
         {isThinking && <p className="text-zinc-500">Thinking...</p>}
+        <div ref={messagesEndRef} />
       </section>
 
       <form onSubmit={sendMessage} className="flex gap-2">
