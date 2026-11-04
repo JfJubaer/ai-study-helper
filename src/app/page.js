@@ -52,7 +52,7 @@ export default function Home() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-2xl flex-col gap-6 p-6">
+    <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col gap-6 p-6">
       <header>
         <h1 className="text-3xl font-bold">AI Study Helper</h1>
         <p className="mt-2 text-zinc-600">
@@ -63,7 +63,7 @@ export default function Home() {
       <section
         aria-label="Chat messages"
         aria-live="polite"
-        className="flex-1 space-y-4 rounded-lg border border-zinc-200 p-4"
+        className="flex-1 space-y-4 rounded-2xl border border-gray-200 p-4"
       >
         {messages.length === 0 && (
           <p className="text-zinc-500">Your conversation will appear here.</p>
@@ -72,10 +72,10 @@ export default function Home() {
         {messages.map((message, index) => (
           <p
             key={`${message.sender}-${index}`}
-            className={`rounded-lg p-3 ${
+            className={`max-w-[80%] rounded-2xl p-3 ${
               message.sender === "user"
-                ? "ml-8 bg-blue-100 text-zinc-900"
-                : "mr-8 bg-zinc-100 text-zinc-900"
+                ? "ml-auto bg-blue-500 text-white"
+                : "mr-auto bg-gray-200 text-gray-900"
             }`}
           >
             <strong>{message.sender === "user" ? "You: " : "AI: "}</strong>
@@ -97,12 +97,12 @@ export default function Home() {
           onChange={(event) => setQuestion(event.target.value)}
           placeholder="Type your question..."
           disabled={isThinking}
-          className="min-w-0 flex-1 rounded-lg border border-zinc-300 px-4 py-2"
+          className="min-w-0 flex-1 rounded-lg border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
         <button
           type="submit"
           disabled={isThinking || !question.trim()}
-          className="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg bg-blue-500 px-5 py-3 text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Send
         </button>
