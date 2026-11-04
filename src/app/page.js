@@ -43,13 +43,16 @@ export default function Home() {
         ...currentMessages,
         { sender: "ai", text: data.reply },
       ]);
-    } catch {
+    } catch (error) {
       // Let the user know if the request did not work.
       setMessages((currentMessages) => [
         ...currentMessages,
         {
           sender: "ai",
-          text: "Sorry, I couldn't get a reply right now. Please try again.",
+          text:
+            error instanceof Error
+              ? `Sorry, I couldn't get a reply: ${error.message}`
+              : "Sorry, I couldn't get a reply right now. Please try again.",
         },
       ]);
     } finally {
